@@ -91,29 +91,24 @@ namespace CustomMath
 
         public static Vec3 operator -(Vec3 leftV3, Vec3 rightV3)
         {
-            //throw new NotImplementedException();
             return new Vec3(leftV3.x - rightV3.x, leftV3.y - rightV3.y, leftV3.z - rightV3.z);
         }
 
         public static Vec3 operator -(Vec3 v3)
         {
-            //throw new NotImplementedException();
             return new Vec3(- v3);
         }
 
         public static Vec3 operator *(Vec3 v3, float scalar)
         {
-            //throw new NotImplementedException();
             return new Vec3(v3 * scalar);
         }
         public static Vec3 operator *(float scalar, Vec3 v3)
         {
-            //throw new NotImplementedException();
             return new Vec3(scalar * v3);
         }
         public static Vec3 operator /(Vec3 v3, float scalar)
         {
-            //throw new NotImplementedException();
             return new Vec3(v3 / scalar);
         }
 
@@ -124,50 +119,70 @@ namespace CustomMath
 
         public static implicit operator Vector2(Vec3 v2)
         {
-            //throw new NotImplementedException();
             return new Vector2(v2.x, v2.y);
         }
         #endregion
 
         #region Functions
-        public override string ToString()
+        public override string ToString() // --- FUNCIONA ---- PERO ---- acomodar para que no tenga tantos numeros despues de la coma
         {
-            return "X = " + x.ToString() + "   Y = " + y.ToString() + "   Z = " + z.ToString();
+            return "(" + x.ToString() + ", " + y.ToString() + ", " + z.ToString() + ")";
+        }
+        
+        public static float Angle(Vec3 from, Vec3 to) // --- FUNCIONA
+        {
+            float produc = Dot(from, to);
+            float mag = Magnitude(from) * Magnitude(to);
+            float ang = produc / mag;
+            return ang = Mathf.Acos(ang) * Mathf.Rad2Deg;
+            // cuando se realiza la multiplicacion del coceno (Mathf.Acos), se pone -Acos- porque
+            // cuando se hacen los pasajes y se pasa el coceno al otro lado del calculo, se pasa como negativo, por esa razon exise -Acos-, que es la version NEGATIVA del Cos.
+
+
+            // aca es donde se utilizan los radianes como una multiplicacion por parte de Unity,
+            // sino, esta la opcion de hacerlo a mano: -Mathf.Acos(ang) / (Mathf.PI / 180)-
+            // que existe para pasar los grados a un numero interpretable por el usuario.
         }
 
 
-        public static float Angle(Vec3 from, Vec3 to)
+        public static Vec3 ClampMagnitude(Vec3 vector, float maxLength) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            if (Magnitude(vector) > maxLength) {
+                vector.Normalize();
+                vector = new Vec3(vector.x * maxLength, vector.y * maxLength, vector.z * maxLength);
+            }
+            return vector;
         }
 
 
-        public static Vec3 ClampMagnitude(Vec3 vector, float maxLength)
+        public static float Magnitude(Vec3 vector) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            float mag = Mathf.Sqrt(Mathf.Pow(vector.x, 2) + Mathf.Pow(vector.y, 2) + Mathf.Pow(vector.z, 2));
+            return mag;
         }
 
 
-        public static float Magnitude(Vec3 vector)
+        public static Vec3 Cross(Vec3 a, Vec3 b) // --- FUNCIONA
+        {// Se utiliza para crear un nuevo vector "perpendicular" a los dos vectores ingresados
+            float newX = (a.y * b.z) - (a.z * b.y);
+            float newY = -((a.x * b.z) - (a.z * b.x));
+            float newZ = (a.x * b.y) - (a.y * b.x);
+
+            return new Vec3(newX, newY, newZ);
+        }
+
+        public static float Distance(Vec3 a, Vec3 b) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            Vec3 c = new Vec3(b.x - a.x, b.y - a.y, b.z - a.z);
+            float dist = Mathf.Sqrt(Mathf.Pow(c.x, 2) + Mathf.Pow(c.y, 2) + Mathf.Pow(c.z, 2));
+            return dist;
         }
 
 
-        public static Vec3 Cross(Vec3 a, Vec3 b)
+        public static float Dot(Vec3 a, Vec3 b) // --- FUNCIONA
         {
-            throw new NotImplementedException();
-        }
-
-        public static float Distance(Vec3 a, Vec3 b)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public static float Dot(Vec3 a, Vec3 b)
-        {
-            throw new NotImplementedException();
+            float dot = (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+            return dot;
         }
 
 
@@ -183,15 +198,41 @@ namespace CustomMath
         }
 
 
-        public static Vec3 Max(Vec3 a, Vec3 b)
-        {
-            throw new NotImplementedException();
+        public static Vec3 Max(Vec3 a, Vec3 b) // --- FUNCIONA
+        { // elige los MAYORES valores de los dos vectores, y forma un solo vector con esos valores
+            float newX;
+            float newY;
+            float newZ;
+
+            if (a.x > b.x) newX = a.x;
+            else newX = b.x;
+
+            if (a.y > b.y) newY = a.y;
+            else newY = b.y;
+
+            if (a.z > b.z) newZ = a.z;
+            else newZ = b.z;
+
+            return new Vec3(newX, newY, newZ);
         }
 
 
-        public static Vec3 Min(Vec3 a, Vec3 b)
-        {
-            throw new NotImplementedException();
+        public static Vec3 Min(Vec3 a, Vec3 b) // --- FUNCIONA
+        { // elige los MENORES valores de los dos vectores, y forma un solo vector con esos valores
+            float newX;
+            float newY;
+            float newZ;
+
+            if (a.x < b.x) newX = a.x;
+            else newX = b.x;
+
+            if (a.y < b.y) newY = a.y;
+            else newY = b.y;
+
+            if (a.z < b.z) newZ = a.z;
+            else newZ = b.z;
+
+            return new Vec3(newX, newY, newZ);
         }
 
 
@@ -213,9 +254,9 @@ namespace CustomMath
         }
 
 
-        public void Set(float newX, float newY, float newZ)
+        public void Set(float newX, float newY, float newZ) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            this = new Vec3(newX, newY, newZ);
         }
 
 
@@ -225,9 +266,9 @@ namespace CustomMath
         }
 
 
-        public void Normalize()
-        {
-            throw new NotImplementedException();
+        public void Normalize() // --- FUNCIONA
+        { // se utiliza para convertirlo en un vector "Normalizado" o "Estandar", que tiene 1 de Magnitud
+            this = new Vec3(this.x / Magnitude(this), this.y / Magnitude(this), this.z / Magnitude(this));
         }
         #endregion
 

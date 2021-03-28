@@ -19,9 +19,35 @@ public class Tester : MonoBehaviour
         Vector3Debugger.AddVector(Vector3.down * 7, Color.green, "elVerde");
         Vector3Debugger.EnableEditorView("elVerde");
 
-    }
 
-    // Update is called once per frame
+        // ------ Angle FUNCIONA
+        // ------ Magnitud FUNCIONA
+        // ------ Producto Punto / Dot FUNCIONA
+        // ------ Distance FUNCIONA
+        // ------ Cross FUNCIONA
+        // ------ Min FUNCIONA
+        // ------ Max FUNCIONA
+        // ------ Normalize FUNCIONA ----- Mas o menos
+        // ------ ClamMagniude FUNCIONA ----- Mas o menos
+        // ------ Set FUNCIONA
+
+        Vector3 unity1 = new Vector3(7,-1,13);
+        Vector3 unity2 = new Vector3(-13,8,9);
+        Vec3    prueb1 = new    Vec3(7,-1,13);
+        Vec3    prueb2 = new    Vec3(-13,8,9);
+
+        //Vector3 uni = Vector3.Min(unity1, unity2);
+        //Vec3 prop = Vec3.Min(prueb1, prueb2);
+
+        Debug.Log("Vector Normal: " + unity1);
+        unity1.Set(1, 2, 3);
+        Debug.Log("Vector nuevo: " + unity1);
+        Debug.Log("-----------------");
+        Debug.Log("Vector Normal: " + prueb1);
+        prueb1.Set(1, 2, 3);
+        Debug.Log("Vector Nuevo: " + prueb1);
+    }
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
