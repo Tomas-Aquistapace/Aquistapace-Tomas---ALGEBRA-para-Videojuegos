@@ -96,20 +96,22 @@ namespace CustomMath
 
         public static Vec3 operator -(Vec3 v3)
         {
-            return new Vec3(- v3);
+            return new Vec3(-v3.x, -v3.y, -v3.z);
         }
 
         public static Vec3 operator *(Vec3 v3, float scalar)
         {
-            return new Vec3(v3 * scalar);
+            return new Vec3(v3.x * scalar, v3.y * scalar, v3.z * scalar);
         }
+
         public static Vec3 operator *(float scalar, Vec3 v3)
         {
-            return new Vec3(scalar * v3);
+            return new Vec3(v3.x * scalar, v3.y * scalar, v3.z * scalar);
         }
+
         public static Vec3 operator /(Vec3 v3, float scalar)
         {
-            return new Vec3(v3 / scalar);
+            return new Vec3(v3.x / scalar, v3.y / scalar, v3.z / scalar);
         }
 
         public static implicit operator Vector3(Vec3 v3)
@@ -144,7 +146,6 @@ namespace CustomMath
             // que existe para pasar los grados a un numero interpretable por el usuario.
         }
 
-
         public static Vec3 ClampMagnitude(Vec3 vector, float maxLength) // --- FUNCIONA
         {
             if (Magnitude(vector) > maxLength) {
@@ -154,13 +155,10 @@ namespace CustomMath
             return vector;
         }
 
-
         public static float Magnitude(Vec3 vector) // --- FUNCIONA
         {
-            float mag = Mathf.Sqrt(Mathf.Pow(vector.x, 2) + Mathf.Pow(vector.y, 2) + Mathf.Pow(vector.z, 2));
-            return mag;
+            return Mathf.Sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z));
         }
-
 
         public static Vec3 Cross(Vec3 a, Vec3 b) // --- FUNCIONA
         {// Se utiliza para crear un nuevo vector "perpendicular" a los dos vectores ingresados
@@ -178,25 +176,39 @@ namespace CustomMath
             return dist;
         }
 
-
         public static float Dot(Vec3 a, Vec3 b) // --- FUNCIONA
         {
             float dot = (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
             return dot;
         }
 
-
-        public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
+        public static Vec3 Lerp(Vec3 a, Vec3 b, float t) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            if (t < 0)
+            {
+                t = 0;
+            }
+            if (t > 1)
+            {
+                t = 1;
+            }
+            // Y = M * X + B
+            // PuntoActual = (Destino - Origen) * Tiempo + OrdenadaAlOrigen
+            float newX = (b.x - a.x) * t + a.x;
+            float newY = (b.y - a.y) * t + a.y;
+            float newZ = (b.z - a.z) * t + a.z;
+            return new Vec3(newX, newY, newZ);
         }
 
-
-        public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
+        public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            // Y = M * X + B
+            // PuntoActual = (Destino - Origen) * Tiempo + OrdenadaAlOrigen
+            float newX = (b.x - a.x) * t + a.x;
+            float newY = (b.y - a.y) * t + a.y;
+            float newZ = (b.z - a.z) * t + a.z;
+            return new Vec3(newX, newY, newZ);
         }
-
 
         public static Vec3 Max(Vec3 a, Vec3 b) // --- FUNCIONA
         { // elige los MAYORES valores de los dos vectores, y forma un solo vector con esos valores
@@ -216,7 +228,6 @@ namespace CustomMath
             return new Vec3(newX, newY, newZ);
         }
 
-
         public static Vec3 Min(Vec3 a, Vec3 b) // --- FUNCIONA
         { // elige los MENORES valores de los dos vectores, y forma un solo vector con esos valores
             float newX;
@@ -235,36 +246,34 @@ namespace CustomMath
             return new Vec3(newX, newY, newZ);
         }
 
-
-        public static float SqrMagnitude(Vec3 vector)
-        {
-            throw new NotImplementedException();
+        public static float SqrMagnitude(Vec3 vector) // --- FUNCIONA
+        { // Se utiliza para ahorrar recursos cuando se utiliza MAGNITUD, al quitar la raiz cuadrada del calculo. WARNING, se trabaja con otra escala gracias a eso
+            return (vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z);
         }
 
-
-        public static Vec3 Project(Vec3 vector, Vec3 onNormal) 
+        public static Vec3 Project(Vec3 vector, Vec3 onNormal) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            // Project = ProductoPunto / Magnitude de onNormal * Magnitude de onNormal
+
+            return (Dot(vector, onNormal) / Mathf.Pow(Magnitude(onNormal), 2)) * onNormal;
         }
 
-
-        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal) 
+        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal) // --- ARREGLAR - Preguntar a lean que pasa ------------------------------------------
         {
-            throw new NotImplementedException();
-        }
+            //throw new NotImplementedException();
 
+            return new Vec3(inNormal + (inDirection - 2 * (Project(inDirection, inNormal))));
+        }
 
         public void Set(float newX, float newY, float newZ) // --- FUNCIONA
         {
             this = new Vec3(newX, newY, newZ);
         }
 
-
-        public void Scale(Vec3 scale)
+        public void Scale(Vec3 scale) // --- FUNCIONA
         {
-            throw new NotImplementedException();
+            this = new Vec3(this.x * scale.x, this.y * scale.y, this.z * scale.z);
         }
-
 
         public void Normalize() // --- FUNCIONA
         { // se utiliza para convertirlo en un vector "Normalizado" o "Estandar", que tiene 1 de Magnitud
