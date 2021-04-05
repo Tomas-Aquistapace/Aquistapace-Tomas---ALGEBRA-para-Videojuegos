@@ -32,11 +32,11 @@ public class Tester : MonoBehaviour
         //Vector3Debugger.EnableEditorView("elVerde");
 
         Vector3Debugger.AddVector(resultado, colorVec, "elResultado");
-        Vector3Debugger.EnableEditorView("elBlanco");
+        Vector3Debugger.EnableEditorView("elResultado");
         Vector3Debugger.AddVector(ejerA, Color.black, "elNegro");
         Vector3Debugger.EnableEditorView("elNegro");
         Vector3Debugger.AddVector(ejerB, Color.white, "elBlanco");
-        Vector3Debugger.EnableEditorView("elAmarillo");
+        Vector3Debugger.EnableEditorView("elBlanco");
 
         // ------ Angle FUNCIONA
         // ------ Magnitud FUNCIONA
@@ -52,22 +52,6 @@ public class Tester : MonoBehaviour
         // ------ Project FUNCIONA
         // ------ Lerp FUNCIONA
         // ------ LerpUpClamped FUNCIONA
-
-        //Vector3 unity1 = new Vector3(7,-1,5);
-        //Vector3 unity2 = new Vector3(-13,8,9);
-        //Vec3    prueb1 = new    Vec3(7,-1,5);
-        //Vec3    prueb2 = new    Vec3(-13,8,9);
-
-        //Vector3 uni = Vector3.Min(unity1, unity2);
-        //Vec3 prop = Vec3.Min(prueb1, prueb2);
-
-        //Debug.Log("Vector Normal: " + unity1);
-        //unity1.Scale(unity2);
-        //Debug.Log("Vector nuevo: " + Vector3.Reflect(unity1, unity2));
-        //Debug.Log("-----------------");
-        //Debug.Log("Vector Normal: " + prueb1);
-        //prueb1.Scale(prueb2);
-        //Debug.Log("Vector Nuevo: " + Vec3.Reflect(prueb1, prueb2));
     }
     
     void Update()
