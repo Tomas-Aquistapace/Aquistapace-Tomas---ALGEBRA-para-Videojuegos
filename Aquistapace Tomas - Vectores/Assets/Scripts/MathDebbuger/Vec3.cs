@@ -262,7 +262,25 @@ namespace CustomMath
         {
             //throw new NotImplementedException();
 
-            return new Vec3(inNormal + (inDirection - 2 * (Project(inDirection, inNormal))));
+            // r = d − 2(d⋅n)n
+
+            // r = d − |2d⋅n| * n
+            //         | n*n|
+
+            // n = Normalice Vector
+            // d = Vector a calcular
+            // r = Resultado del Reflect
+
+            //return new Vec3(inNormal + (inDirection - 2 * (Project(inDirection, inNormal))));
+
+            Vec3 N = inNormal;
+            N.Normalize();
+
+            //Vec3 Ncuad = new Vec3(N.x * N.x, N.y * N.y, N.z * N.z);
+
+            return new Vec3(inDirection - 2*(Dot(inDirection, N) * N));
+
+            //return new Vec3(inDirection - ((Dot(2 * inDirection, N) / (N * N)) * N));
         }
 
         public void Set(float newX, float newY, float newZ) // --- FUNCIONA

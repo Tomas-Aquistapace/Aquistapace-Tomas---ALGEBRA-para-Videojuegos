@@ -52,6 +52,15 @@ public class Tester : MonoBehaviour
         // ------ Project FUNCIONA
         // ------ Lerp FUNCIONA
         // ------ LerpUpClamped FUNCIONA
+
+        Vector3 vecU = new Vec3(2, 7, 10);
+        Vector3 NU = new Vec3(5, 1, 7);
+
+        Vec3 vec = new Vec3(2,7,10);
+        Vec3 N = new Vec3(5,1,7);
+
+        Debug.Log("Reflect Unity: " + Vector3.Reflect(vecU,NU));
+        Debug.Log("Reflect Mio: " + Vec3.Reflect(vec,N));
     }
     
     void Update()
