@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using CustomMath;
+using CustomPlane;
 
 public class PlanesTarea : MonoBehaviour
 {
@@ -42,6 +43,28 @@ public class PlanesTarea : MonoBehaviour
         _planeFar = new Plane(farPlaneNormal, farPlanePosition);
         _planeTop = new Plane(topPlaneNormal, topPlanePosition);
         _planeDown = new Plane(downPlaneNormal, downPlanePosition);
+
+        // ----------------------------------
+        // prueba de mis planos
+        Vector3 lNu = new Vec3(leftObjTrans.right);
+        Vector3 lPu = new Vec3(leftObjTrans.localPosition);
+        
+        Plane planoU = new Plane(lNu, lPu);
+        MyPlane plano1 = new MyPlane(leftPlaneNormal, leftPlanePosition);
+
+        //Debug.Log("Plano Unity: " + planoU);
+        //Debug.Log("Plano Mio: " + plano1.Normal());
+
+        Vec3 cubePos = new Vec3(cube.transform.position);
+        Vector3 cubeNormal = cube.transform.up;
+        Vec3 cubeNormalMio = new Vec3(cube.transform.up);
+
+        planoU.SetNormalAndPosition(cubeNormal, cube.transform.position);
+        plano1.SetNormalAndPosition(cubeNormalMio, cubePos);
+
+        Debug.Log(planoU);
+        Debug.Log(plano1);
+
     }
 
     void Update()
@@ -67,7 +90,6 @@ public class PlanesTarea : MonoBehaviour
         //Debug.Log("Down: " + _planeDown.GetSide(cube.transform.position));
         //Debug.Log("Top: " + _planeTop.GetSide(cube.transform.position));
         Debug.Log("Far: " + _planeFar.GetSide(cube.transform.position));
-        Debug.Log(_planeFar);
 
         if (_planeNear.GetSide(cube.transform.position) && _planeRight.GetSide(cube.transform.position) && _planeLeft.GetSide(cube.transform.position) &&
              _planeDown.GetSide(cube.transform.position) && _planeTop.GetSide(cube.transform.position) && _planeFar.GetSide(cube.transform.position))

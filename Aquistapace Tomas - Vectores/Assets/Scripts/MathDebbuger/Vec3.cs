@@ -161,7 +161,7 @@ namespace CustomMath
         }
 
         public static Vec3 Cross(Vec3 a, Vec3 b) // --- FUNCIONA
-        {// Se utiliza para crear un nuevo vector "perpendicular" a los dos vectores ingresados
+        {// Se utiliza para crear un nuevo vector "ortogonal" a los dos vectores ingresados
             float newX = (a.y * b.z) - (a.z * b.y);
             float newY = -((a.x * b.z) - (a.z * b.x));
             float newZ = (a.x * b.y) - (a.y * b.x);
@@ -177,7 +177,7 @@ namespace CustomMath
         }
 
         public static float Dot(Vec3 a, Vec3 b) // --- FUNCIONA
-        {
+        { // sirve para sacar el angulo entre dos vectores
             float dot = (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
             return dot;
         }
@@ -260,19 +260,6 @@ namespace CustomMath
 
         public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal) // --- ARREGLAR - Preguntar a lean que pasa ------------------------------------------
         {
-            //throw new NotImplementedException();
-
-            // r = d − 2(d⋅n)n
-
-            // r = d − |2d⋅n| * n
-            //         | n*n|
-
-            // n = Normalice Vector
-            // d = Vector a calcular
-            // r = Resultado del Reflect
-
-            //return new Vec3(inNormal + (inDirection - 2 * (Project(inDirection, inNormal))));
-
             Vec3 N = inNormal;
             N.Normalize();
 

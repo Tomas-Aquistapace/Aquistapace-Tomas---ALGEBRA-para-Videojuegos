@@ -6,7 +6,8 @@ using CustomMath;
 public class Tester : MonoBehaviour
 {
     public enum Funciones {
-        Cross, Lerp, LerpUnclamped, Max, Mix, Project, Reflect
+        //Cross, Lerp, LerpUnclamped, Max, Mix, Project, Reflect
+        Uno, Dos, Tres, Cuatro, Cinco, Seis, Siete, Ocho, Nueve, Diez
     }
 
     public Funciones funcion;
@@ -53,63 +54,69 @@ public class Tester : MonoBehaviour
         // ------ Lerp FUNCIONA
         // ------ LerpUpClamped FUNCIONA
 
-        Vector3 vecU = new Vec3(2, 7, 10);
-        Vector3 NU = new Vec3(5, 1, 7);
 
-        Vec3 vec = new Vec3(2,7,10);
-        Vec3 N = new Vec3(5,1,7);
 
-        Debug.Log("Reflect Unity: " + Vector3.Reflect(vecU,NU));
-        Debug.Log("Reflect Mio: " + Vec3.Reflect(vec,N));
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            StartCoroutine( UpdateBlueVector());
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Vector3Debugger.TurnOffVector("elAzul");
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Vector3Debugger.TurnOnVector("elAzul");
-        }
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    StartCoroutine( UpdateBlueVector());
+        //}
+        //
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    Vector3Debugger.TurnOffVector("elAzul");
+        //}
+        //
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    Vector3Debugger.TurnOnVector("elAzul");
+        //}
 
         Vec3 A = new Vec3(ejerA);
         Vec3 B = new Vec3(ejerB);
 
         switch (funcion)
         {
-            case Funciones.Cross:
+            case Funciones.Uno:
 
                 break;
 
-            case Funciones.Lerp:
+            case Funciones.Dos:
 
                 break;
 
-            case Funciones.LerpUnclamped:
+            case Funciones.Tres:
 
                 break;
 
-            case Funciones.Max:
+            case Funciones.Cuatro:
 
                 break;
 
-            case Funciones.Mix:
+            case Funciones.Cinco:
 
                 break;
 
-            case Funciones.Project:
+            case Funciones.Seis:
 
                 break;
 
-            case Funciones.Reflect:
+            case Funciones.Siete:
+
+                break;
+
+            case Funciones.Ocho:
+
+                break;
+
+            case Funciones.Nueve:
+
+                break;
+
+            case Funciones.Diez:
 
                 break;
         }
