@@ -46,25 +46,23 @@ public class PlanesTarea : MonoBehaviour
 
         // ----------------------------------
         // prueba de mis planos
-        Vector3 lNu = new Vec3(leftObjTrans.right);
-        Vector3 lPu = new Vec3(leftObjTrans.localPosition);
-        
-        Plane planoU = new Plane(lNu, lPu);
-        MyPlane plano1 = new MyPlane(leftPlaneNormal, leftPlanePosition);
 
-        //Debug.Log("Plano Unity: " + planoU);
-        //Debug.Log("Plano Mio: " + plano1.Normal());
-
-        Vec3 cubePos = new Vec3(cube.transform.position);
-        Vector3 cubeNormal = cube.transform.up;
-        Vec3 cubeNormalMio = new Vec3(cube.transform.up);
-
-        planoU.SetNormalAndPosition(cubeNormal, cube.transform.position);
-        plano1.SetNormalAndPosition(cubeNormalMio, cubePos);
-
-        Debug.Log(planoU);
-        Debug.Log(plano1);
-
+        //Vector3 V1 = new Vector3(1,5,6);
+        //Vector3 V2 = new Vector3(4,10,3);
+        //Vector3 V3 = new Vector3(9,4,7);
+        //
+        //Vec3 VM1 = new Vec3(V1);
+        //Vec3 VM2 = new Vec3(V2);
+        //Vec3 VM3 = new Vec3(V3);
+        //
+        //Plane planoU = new Plane(V1, V2);
+        //MyPlane plano1 = new MyPlane(VM1, VM2);
+        //
+        //Debug.Log(planoU);
+        //Debug.Log(plano1);
+        //
+        //Debug.Log(planoU.GetDistanceToPoint(V3));
+        //Debug.Log(plano1.GetDistanceToPoint(VM3));
     }
 
     void Update()

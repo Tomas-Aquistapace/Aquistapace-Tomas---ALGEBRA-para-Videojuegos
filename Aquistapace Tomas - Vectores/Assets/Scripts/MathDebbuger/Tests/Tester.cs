@@ -6,32 +6,19 @@ using CustomMath;
 public class Tester : MonoBehaviour
 {
     public enum Funciones {
-        //Cross, Lerp, LerpUnclamped, Max, Mix, Project, Reflect
         Uno, Dos, Tres, Cuatro, Cinco, Seis, Siete, Ocho, Nueve, Diez
     }
 
     public Funciones funcion;
     public Color colorVec;
 
-    public Vector3 ejerA;
-    public Vector3 ejerB;
+    public Vector3 ejerA = Vector3.zero;
+    public Vector3 ejerB = Vector3.zero;
     [HideInInspector]
-    public Vector3 resultado;
+    public Vector3 resultado = Vector3.zero;
 
     void Start()
     {
-        //List<Vector3> vectors = new List<Vector3>();
-        //vectors.Add(new Vec3(10.0f, 0.0f, 0.0f));
-        //vectors.Add(new Vec3(10.0f, 10.0f, 0.0f));
-        //vectors.Add(new Vec3(20.0f, 10.0f, 0.0f));
-        //vectors.Add(new Vec3(20.0f, 20.0f, 0.0f));
-        //Vector3Debugger.AddVectorsSecuence(vectors, false, Color.red, "secuencia");
-        //Vector3Debugger.EnableEditorView("secuencia");
-        //Vector3Debugger.AddVector(new Vector3(10, 10, 0), Color.blue, "elAzul");
-        //Vector3Debugger.EnableEditorView("elAzul");
-        //Vector3Debugger.AddVector(Vector3.down * 7, Color.green, "elVerde");
-        //Vector3Debugger.EnableEditorView("elVerde");
-
         Vector3Debugger.AddVector(resultado, colorVec, "elResultado");
         Vector3Debugger.EnableEditorView("elResultado");
         Vector3Debugger.AddVector(ejerA, Color.black, "elNegro");
@@ -53,88 +40,92 @@ public class Tester : MonoBehaviour
         // ------ Project FUNCIONA
         // ------ Lerp FUNCIONA
         // ------ LerpUpClamped FUNCIONA
-
-
-
     }
     
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.L))
-        //{
-        //    StartCoroutine( UpdateBlueVector());
-        //}
-        //
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    Vector3Debugger.TurnOffVector("elAzul");
-        //}
-        //
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    Vector3Debugger.TurnOnVector("elAzul");
-        //}
-
         Vec3 A = new Vec3(ejerA);
         Vec3 B = new Vec3(ejerB);
+        Vec3 C = new Vec3(resultado);
 
         switch (funcion)
         {
-            case Funciones.Uno:
+            case Funciones.Uno: // Suma de Dos Vectores3
+
+                C = A + B;
 
                 break;
 
-            case Funciones.Dos:
+            case Funciones.Dos: // Resta de dos Vectores3
+
+                C = A - B;
 
                 break;
 
-            case Funciones.Tres:
+            case Funciones.Tres: // Se hace una escala entre los dos Vectores Existentes
+
+                C = A;
+                C.Scale(B);
 
                 break;
 
             case Funciones.Cuatro:
 
+                C = Vec3.Cross(A, B);
+
                 break;
 
             case Funciones.Cinco:
+
+                // Lerp
 
                 break;
 
             case Funciones.Seis:
 
+                // Max
+
                 break;
 
             case Funciones.Siete:
+
+                // Proyect
 
                 break;
 
             case Funciones.Ocho:
 
+                Vec3 suma = A + B;
+                C = suma.normalized * Vec3.Distance(A, B);
+
                 break;
 
             case Funciones.Nueve:
 
+                // Reflect
+
                 break;
 
             case Funciones.Diez:
+
+                // LerpUnclamp
 
                 break;
         }
 
         //resultado = Vector3.Reflect(ejerA, ejerB);
         //
-        //Vector3Debugger.UpdatePosition("elBlanco", resultado);
-        //Vector3Debugger.UpdatePosition("elNegro", ejerA);
-        //Vector3Debugger.UpdatePosition("elAmarillo", ejerB);
+        Vector3Debugger.UpdatePosition("elBlanco", resultado);
+        Vector3Debugger.UpdatePosition("elNegro", ejerA);
+        Vector3Debugger.UpdatePosition("elAmarillo", ejerB);
     }
 
-    IEnumerator UpdateBlueVector()
-    {
-        for (int i = 0; i < 100; i++)
-        {
-            Vector3Debugger.UpdatePosition("elAzul", new Vector3(2.4f, 6.3f, 0.5f) * (i * 0.05f));
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
-
+    //IEnumerator UpdateBlueVector()
+    //{
+    //    for (int i = 0; i < 100; i++)
+    //    {
+    //        Vector3Debugger.UpdatePosition("elAzul", new Vector3(2.4f, 6.3f, 0.5f) * (i * 0.05f));
+    //        yield return new WaitForSeconds(0.2f);
+    //    }
+    //}
 }

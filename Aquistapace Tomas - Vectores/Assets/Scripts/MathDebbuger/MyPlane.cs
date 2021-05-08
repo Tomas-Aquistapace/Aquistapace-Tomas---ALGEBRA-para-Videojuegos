@@ -8,12 +8,8 @@ namespace CustomPlane
     public struct MyPlane
     {
         #region Variables
-        Vec3 _posA;
-        Vec3 _posB;
-        Vec3 _posC;
         Vec3 _normal;
         float _distance;
-        Vec3 _flipped;
         #endregion
 
         #region Properties
@@ -24,7 +20,7 @@ namespace CustomPlane
 
         public Vec3 Flipped()
         {
-            return _flipped;
+            return -_normal;
         }
 
         public Vec3 Normal()
@@ -36,28 +32,17 @@ namespace CustomPlane
         #region Constructors
         public MyPlane(Vec3 inNormal, Vec3 inPoint)
         {
-            Vec3 newNormalB = new Vec3(inNormal.x, -inNormal.z, 0);
-            Vec3 newNormalC = new Vec3(0, inNormal.x, inNormal.y);
-
-            _posA = inPoint;
-            _posB = inPoint + newNormalB;
-            _posC = inPoint + newNormalC;
-
-            _normal = inNormal;
-            _distance = Vec3.Dot(-_posA, _normal) / Vec3.Magnitude(_normal);
-            _flipped = -_normal;
+            _normal = inNormal.normalized;
+            _distance = -Vec3.Dot(_normal, inPoint);
         }
 
         public MyPlane(Vec3 A, Vec3 B, Vec3 C)
         {
-            _posA = A; _posB = B; _posC = C;
+            // se sacan dos Vectores perpendiculares al plano utilizando B y C
+            // B - A y C - A
 
-            Vec3 pointA = _posB - _posA;
-            Vec3 pointB = _posC - _posA;
-
-            _normal = Vec3.Cross(pointA, pointB);
-            _distance = Vec3.Dot(-_posA, _normal) / Vec3.Magnitude(_normal);
-            _flipped = -_normal;
+            _normal = Vec3.Cross(B - A, C - A).normalized;
+            _distance = -Vec3.Dot(_normal, A);
         }
         #endregion
 
@@ -69,21 +54,18 @@ namespace CustomPlane
 
         public Vec3 ClosestPointOnPlane(Vec3 point) // Por el punto dado se obtiene el punto del plano mas cercano
         {
-            Vec3 newVec = point;
-
-
-
-            return newVec;
+            return (point - _normal * GetDistanceToPoint(point));
         }
 
         public void Flip() // Da vuelta el plano para que mire al lado contrario al que estaba
         {
             _normal = _normal * -1;
+            _distance = _distance * -1;
         }
 
         public float GetDistanceToPoint(Vec3 point) // Obtiene una distancia POSITIVA si el punto esta del lado frontal del plano, y NEGATIVA si el punto esta del lado opuesto
         {
-            return Vec3.Dot(point -_posA, _normal) / Vec3.Magnitude(_normal);
+            return Vec3.Dot(point - point, _normal) / Vec3.Magnitude(_normal);
         }
 
         public bool GetSide(Vec3 point) // Pregunta si el punto esta del lado positivo del plano
@@ -103,28 +85,14 @@ namespace CustomPlane
 
         public void Set3Points(Vec3 A, Vec3 B, Vec3 C) // setea 3 puntos nuevos que componen al plano
         {
-            _posA = A; _posB = B; _posC = C;
-
-            Vec3 pointA = _posB - _posA;
-            Vec3 pointB = _posC - _posA;
-
-            _normal = Vec3.Cross(pointA, pointB);
-            _distance = Vec3.Dot(-_posA, _normal) / Vec3.Magnitude(_normal);
-            _flipped = -_normal;
+            _normal = Vec3.Cross(B - A, C - A);
+            _distance = -Vec3.Dot(_normal, A);
         }
 
         public void SetNormalAndPosition(Vec3 inNormal, Vec3 inPoint) // setea una nueva normal y posicion al plano
         {
-            Vec3 newNormalB = new Vec3(inNormal.x, -inNormal.z, 0);
-            Vec3 newNormalC = new Vec3(0, inNormal.x, inNormal.y);
-
-            _posA = inPoint;
-            _posB = inPoint + newNormalB;
-            _posC = inPoint + newNormalC;
-
             _normal = inNormal;
-            _distance = Vec3.Dot(-_posA, _normal) / Vec3.Magnitude(_normal);
-            _flipped = -_normal;
+            _distance = -Vec3.Dot(_normal, inPoint);
         }
 
         //public static MyPlane Translate(MyPlane plane, Vec3 translation)
