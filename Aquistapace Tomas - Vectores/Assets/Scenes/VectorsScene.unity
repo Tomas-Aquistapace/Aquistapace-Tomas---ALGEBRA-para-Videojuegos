@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5899b3b1fa657b44810154516827330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  funcion: 7
+  funcion: 4
   colorVec: {r: 0.018987656, g: 0, b: 1, a: 0}
   ejerA: {x: 8.84, y: 5.1, z: 0}
   ejerB: {x: -4.8, y: 4.5, z: 0}
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 642327099, guid: 797d09ec304af4a478da2efbbda0cd60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ejercicio: 7
+  ejercicio: 4
   vectorColor: {r: 1, g: 0, b: 0, a: 1}
   a: {x: 8.84, y: 5.1, z: 0}
   b: {x: -4.8, y: 4.5, z: 0}

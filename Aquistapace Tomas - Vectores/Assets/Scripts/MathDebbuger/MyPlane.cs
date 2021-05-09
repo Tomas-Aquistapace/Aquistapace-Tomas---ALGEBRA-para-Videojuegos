@@ -65,7 +65,7 @@ namespace CustomPlane
 
         public float GetDistanceToPoint(Vec3 point) // Obtiene una distancia POSITIVA si el punto esta del lado frontal del plano, y NEGATIVA si el punto esta del lado opuesto
         {
-            return Vec3.Dot(point - point, _normal) / Vec3.Magnitude(_normal);
+            return Vec3.Dot(point, _normal) + _distance / Vec3.Magnitude(_normal);
         }
 
         public bool GetSide(Vec3 point) // Pregunta si el punto esta del lado positivo del plano
@@ -95,9 +95,12 @@ namespace CustomPlane
             _distance = -Vec3.Dot(_normal, inPoint);
         }
 
-        //public static MyPlane Translate(MyPlane plane, Vec3 translation)
+        //public static MyPlane Translate(MyPlane plane, Vec3 translation) // No supe como hacer que funcione con un solo vec3 que se le ingresa
         //{
-        //    
+        //    plane._normal = translation.normalized;
+        //    plane._distance = -Vec3.Dot(plane._normal, translation);
+        //
+        //    return plane;
         //}
         #endregion
     }

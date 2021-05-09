@@ -119,13 +119,4 @@ public class Tester : MonoBehaviour
         Vector3Debugger.UpdatePosition("elNegro", ejerA);
         Vector3Debugger.UpdatePosition("elBlanco", ejerB);
     }
-
-    //IEnumerator UpdateBlueVector()
-    //{
-    //    for (int i = 0; i < 100; i++)
-    //    {
-    //        Vector3Debugger.UpdatePosition("elAzul", new Vector3(2.4f, 6.3f, 0.5f) * (i * 0.05f));
-    //        yield return new WaitForSeconds(0.2f);
-    //    }
-    //}
 }

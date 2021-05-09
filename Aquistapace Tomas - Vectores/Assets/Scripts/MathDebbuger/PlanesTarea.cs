@@ -1,96 +1,117 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using CustomMath;
 using CustomPlane;
 
 public class PlanesTarea : MonoBehaviour
 {
-    public Transform cube;
+    public GameObject cubeTest;
+    Vec3 cubePosition;
 
-    public Transform leftObjTrans;    
-    public Transform rightObjTrans;    
-    public Transform nearObjTrans;    
+    public Transform leftObjTrans;
+    public Transform rightObjTrans;
+    public Transform nearObjTrans;
     public Transform farObjTrans;
     public Transform topObjTrans;
     public Transform downObjTrans;
 
-    Plane _planeLeft;
-    Plane _planeRight;
-    Plane _planeNear;
-    Plane _planeFar;
-    Plane _planeTop;
-    Plane _planeDown;
+    MyPlane _planeLeft;
+    MyPlane _planeRight;
+    MyPlane _planeNear;
+    MyPlane _planeFar;
+    MyPlane _planeTop;
+    MyPlane _planeDown;
+
+    Vec3 leftPlaneNormal;
+    Vec3 rightPlaneNormal;
+    Vec3 nearPlaneNormal;
+    Vec3 farPlaneNormal;
+    Vec3 topPlaneNormal;
+    Vec3 downPlaneNormal;
+
+    Vec3 leftPlanePosition;
+    Vec3 rightPlanePosition;
+    Vec3 nearPlanePosition;
+    Vec3 farPlanePosition;
+    Vec3 topPlanePosition;
+    Vec3 downPlanePosition;
+
+    // -----------------------------
+    const float SPEED_ROTATION = 20;
+    Vec3 ROTATION_AXIS = new Vec3(0,5,0);
+    Vec3 ROTATE_POINT = Vec3.Zero;
+    // -----------------------------
 
     void Start()
     {
-        Vec3 leftPlaneNormal = new Vec3(leftObjTrans.right);
-        Vec3 rightPlaneNormal = new Vec3(rightObjTrans.right);
-        Vec3 nearPlaneNormal = new Vec3(nearObjTrans.right);
-        Vec3 farPlaneNormal = new Vec3(farObjTrans.right);
-        Vec3 topPlaneNormal = new Vec3(topObjTrans.right);
-        Vec3 downPlaneNormal = new Vec3(downObjTrans.right);
+        UpdatePositionObjects();
 
-        Vec3 leftPlanePosition = new Vec3(leftObjTrans.localPosition);
-        Vec3 rightPlanePosition = new Vec3(rightObjTrans.localPosition);
-        Vec3 nearPlanePosition = new Vec3(nearObjTrans.localPosition);
-        Vec3 farPlanePosition = new Vec3(farObjTrans.localPosition);
-        Vec3 topPlanePosition = new Vec3(topObjTrans.localPosition);
-        Vec3 downPlanePosition = new Vec3(downObjTrans.localPosition);
-
-        _planeLeft = new Plane(leftPlaneNormal, leftPlanePosition);
-        _planeRight = new Plane(rightPlaneNormal, rightPlanePosition);
-        _planeNear = new Plane(nearPlaneNormal, nearPlanePosition);
-        _planeFar = new Plane(farPlaneNormal, farPlanePosition);
-        _planeTop = new Plane(topPlaneNormal, topPlanePosition);
-        _planeDown = new Plane(downPlaneNormal, downPlanePosition);
-
-        // ----------------------------------
-        // prueba de mis planos
-
-        //Vector3 V1 = new Vector3(1,5,6);
-        //Vector3 V2 = new Vector3(4,10,3);
-        //Vector3 V3 = new Vector3(9,4,7);
-        //
-        //Vec3 VM1 = new Vec3(V1);
-        //Vec3 VM2 = new Vec3(V2);
-        //Vec3 VM3 = new Vec3(V3);
-        //
-        //Plane planoU = new Plane(V1, V2);
-        //MyPlane plano1 = new MyPlane(VM1, VM2);
-        //
-        //Debug.Log(planoU);
-        //Debug.Log(plano1);
-        //
-        //Debug.Log(planoU.GetDistanceToPoint(V3));
-        //Debug.Log(plano1.GetDistanceToPoint(VM3));
+        _planeLeft = new MyPlane(leftPlaneNormal, leftPlanePosition);
+        _planeRight = new MyPlane(rightPlaneNormal, rightPlanePosition);
+        _planeNear = new MyPlane(nearPlaneNormal, nearPlanePosition);
+        _planeFar = new MyPlane(farPlaneNormal, farPlanePosition);
+        _planeTop = new MyPlane(topPlaneNormal, topPlanePosition);
+        _planeDown = new MyPlane(downPlaneNormal, downPlanePosition);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        RotateObjects();
+        UpdatePositionObjects();
+        MovePlanes();
+
+        if (DetectObject(cubePosition))
         {
-            if (DetectObject(cube))
-            {
-                Debug.Log("adentro");
-            }
-            else
-            {
-                Debug.Log("afuera");
-            }
+            cubeTest.SetActive(true);
+        }
+        else
+        {
+            cubeTest.SetActive(false);
         }
     }
 
-    bool DetectObject(Transform cube)
+    void UpdatePositionObjects()
     {
-        //Debug.Log("Near: " + _planeNear.GetSide(cube.transform.position));
-        //Debug.Log("Right: " + _planeRight.GetSide(cube.transform.position));
-        //Debug.Log("Left: " + _planeLeft.GetSide(cube.transform.position));
-        //Debug.Log("Down: " + _planeDown.GetSide(cube.transform.position));
-        //Debug.Log("Top: " + _planeTop.GetSide(cube.transform.position));
-        Debug.Log("Far: " + _planeFar.GetSide(cube.transform.position));
+        cubePosition = new Vec3(cubeTest.transform.position);
 
-        if (_planeNear.GetSide(cube.transform.position) && _planeRight.GetSide(cube.transform.position) && _planeLeft.GetSide(cube.transform.position) &&
-             _planeDown.GetSide(cube.transform.position) && _planeTop.GetSide(cube.transform.position) && _planeFar.GetSide(cube.transform.position))
+        leftPlaneNormal = new Vec3(leftObjTrans.right);
+        rightPlaneNormal = new Vec3(rightObjTrans.right);
+        nearPlaneNormal = new Vec3(nearObjTrans.right);
+        farPlaneNormal = new Vec3(farObjTrans.right);
+        topPlaneNormal = new Vec3(topObjTrans.right);
+        downPlaneNormal = new Vec3(downObjTrans.right);
+
+        leftPlanePosition = new Vec3(leftObjTrans.localPosition);
+        rightPlanePosition = new Vec3(rightObjTrans.localPosition);
+        nearPlanePosition = new Vec3(nearObjTrans.localPosition);
+        farPlanePosition = new Vec3(farObjTrans.localPosition);
+        topPlanePosition = new Vec3(topObjTrans.localPosition);
+        downPlanePosition = new Vec3(downObjTrans.localPosition);
+    }
+
+    void MovePlanes()
+    {
+        _planeLeft.SetNormalAndPosition(leftPlaneNormal, leftPlanePosition);
+        _planeRight.SetNormalAndPosition(rightPlaneNormal, rightPlanePosition);
+        _planeNear.SetNormalAndPosition(nearPlaneNormal, nearPlanePosition);
+        _planeFar.SetNormalAndPosition(farPlaneNormal, farPlanePosition);
+        _planeTop.SetNormalAndPosition(topPlaneNormal, topPlanePosition);
+        _planeDown.SetNormalAndPosition(downPlaneNormal, downPlanePosition);
+    }
+
+    void RotateObjects()
+    {
+        leftObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        rightObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        nearObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        farObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        topObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        downObjTrans.RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+    }
+
+    bool DetectObject(Vec3 cubePos)
+    {
+        if (_planeNear.GetSide(cubePos) && _planeRight.GetSide(cubePos) && _planeLeft.GetSide(cubePos) &&
+         _planeDown.GetSide(cubePos) && _planeTop.GetSide(cubePos) && _planeFar.GetSide(cubePos))
         {
             return true;
         }
