@@ -223,6 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 503643719}
   - component: {fileID: 503643718}
+  - component: {fileID: 503643720}
   m_Layer: 0
   m_Name: Tester
   m_TagString: Untagged
@@ -242,10 +243,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5899b3b1fa657b44810154516827330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  funcion: 0
-  colorVec: {r: 0, g: 0, b: 0, a: 0}
-  ejerA: {x: 0, y: 0, z: 0}
-  ejerB: {x: 0, y: 0, z: 0}
+  funcion: 7
+  colorVec: {r: 0.018987656, g: 0, b: 1, a: 0}
+  ejerA: {x: 8.84, y: 5.1, z: 0}
+  ejerB: {x: -4.8, y: 4.5, z: 0}
   resultado: {x: 0, y: 0, z: 0}
 --- !u!4 &503643719
 Transform:
@@ -261,6 +262,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &503643720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503643717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 642327099, guid: 797d09ec304af4a478da2efbbda0cd60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ejercicio: 7
+  vectorColor: {r: 1, g: 0, b: 0, a: 1}
+  a: {x: 8.84, y: 5.1, z: 0}
+  b: {x: -4.8, y: 4.5, z: 0}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0

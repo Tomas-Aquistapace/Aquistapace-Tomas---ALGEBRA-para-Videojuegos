@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MathDebbuger;
 using CustomMath;
+
 public class Tester : MonoBehaviour
 {
     public enum Funciones {
@@ -17,6 +18,9 @@ public class Tester : MonoBehaviour
     [HideInInspector]
     public Vector3 resultado = Vector3.zero;
 
+    float timeLerp;
+    float timeLerpUnclamp;
+
     void Start()
     {
         Vector3Debugger.AddVector(resultado, colorVec, "elResultado");
@@ -26,20 +30,8 @@ public class Tester : MonoBehaviour
         Vector3Debugger.AddVector(ejerB, Color.white, "elBlanco");
         Vector3Debugger.EnableEditorView("elBlanco");
 
-        // ------ Angle FUNCIONA
-        // ------ Magnitud FUNCIONA
-        // ------ Producto Punto / Dot FUNCIONA
-        // ------ Distance FUNCIONA
-        // ------ Cross FUNCIONA
-        // ------ Min FUNCIONA
-        // ------ Max FUNCIONA
-        // ------ Normalize FUNCIONA ----- Mas o menos
-        // ------ ClamMagniude FUNCIONA ----- Mas o menos
-        // ------ Set FUNCIONA
-        // ------ Scale FUNCIONA
-        // ------ Project FUNCIONA
-        // ------ Lerp FUNCIONA
-        // ------ LerpUpClamped FUNCIONA
+        timeLerp = 0;
+        timeLerpUnclamp = 1;
     }
     
     void Update()
@@ -58,7 +50,7 @@ public class Tester : MonoBehaviour
 
             case Funciones.Dos: // Resta de dos Vectores3
 
-                C = A - B;
+                C = B - A;
 
                 break;
 
@@ -69,55 +61,63 @@ public class Tester : MonoBehaviour
 
                 break;
 
-            case Funciones.Cuatro:
+            case Funciones.Cuatro: // Se hace un producto Cruz entre los dos vectores
 
-                C = Vec3.Cross(A, B);
-
-                break;
-
-            case Funciones.Cinco:
-
-                // Lerp
+                C = Vec3.Cross(B, A);
 
                 break;
 
-            case Funciones.Seis:
+            case Funciones.Cinco: // Se hace un Lerp entre los dos vectores
 
-                // Max
+                if (timeLerp > 1)
+                    timeLerp = 0;
+                else
+                    timeLerp += Time.deltaTime;
+
+                C = Vec3.Lerp(A, B, timeLerp);
 
                 break;
 
-            case Funciones.Siete:
+            case Funciones.Seis: // Se hace se saca los valores maximos de cada vector
 
-                // Proyect
+                C = Vec3.Max(A, B);
 
                 break;
 
-            case Funciones.Ocho:
+            case Funciones.Siete: // Se saca la Proyeccion entre dos vectores
+                
+                C = Vec3.Project(A, B);
+
+                break;
+
+            case Funciones.Ocho: // Se hace un normalize de los dos vectores y despues se multiplica a la distancia entre los mismos                            Pdt. Este costo porque era raro
 
                 Vec3 suma = A + B;
                 C = suma.normalized * Vec3.Distance(A, B);
 
                 break;
 
-            case Funciones.Nueve:
-
-                // Reflect
+            case Funciones.Nueve: // Se hace un reflect utilizando los los vertores
+                
+                C = Vec3.Reflect(B, A);
 
                 break;
 
-            case Funciones.Diez:
+            case Funciones.Diez: // Se hace un LerpUnclamped para que no se detenga cuando llega al limite permitido y asi siga avanzando
 
-                // LerpUnclamp
+                timeLerpUnclamp -= Time.deltaTime;
+
+                C = Vec3.LerpUnclamped(A, B, timeLerpUnclamp);
 
                 break;
         }
+        ejerA = A;
+        ejerB = B;
+        resultado = C;
 
-        //resultado = Vector3.Reflect(ejerA, ejerB);
-        //
-        Vector3Debugger.UpdatePosition("elBlanco", resultado);
+        Vector3Debugger.UpdatePosition("elResultado", resultado);
         Vector3Debugger.UpdatePosition("elNegro", ejerA);
-        Vector3Debugger.UpdatePosition("elAmarillo", ejerB);
+        Vector3Debugger.UpdatePosition("elBlanco", ejerB);
     }
 
     //IEnumerator UpdateBlueVector()
