@@ -84,7 +84,23 @@ namespace CustomQuatern
         //   euler:
         public static MyQuatern Euler(Vec3 euler)
         {
+            MyQuatern qz;
+            MyQuatern qx;
+            MyQuatern qy;
 
+            float sinAngleX = Mathf.Sin(Mathf.Deg2Rad * euler.x * 0.5f);
+            float cosAngleX = Mathf.Cos(Mathf.Deg2Rad * euler.x * 0.5f);
+            qx.Set(sinAngleX, 0, 0, cosAngleX);
+
+            float sinAngleY = Mathf.Sin(Mathf.Deg2Rad * euler.y * 0.5f);
+            float cosAngleY = Mathf.Cos(Mathf.Deg2Rad * euler.y * 0.5f);
+            qy.Set(0, sinAngleY, 0, cosAngleY);
+
+            float sinAngleZ = Mathf.Sin(Mathf.Deg2Rad * euler.z * 0.5f);
+            float cosAngleZ = Mathf.Cos(Mathf.Deg2Rad * euler.z * 0.5f);
+            qz.Set(0, 0, sinAngleZ, cosAngleZ);
+
+            return (qx * qy * qz);
         }
         //
         // Resumen:
@@ -291,7 +307,10 @@ namespace CustomQuatern
         //   newW:
         public void Set(float newX, float newY, float newZ, float newW)
         {
-
+            _x = newX;
+            _y = newY;
+            _z = newZ;
+            _w = newW;
         }
         public void SetAxisAngle(Vec3 axis, float angle)
         {
@@ -369,42 +388,55 @@ namespace CustomQuatern
         {
 
         }
-        //
-        // Resumen:
-        //     Returns a nicely formatted string of the Quaternion.
-        //
-        // Parámetros:
-        //   format:
-        public string ToString(string format)
-        {
+        #endregion
 
-        }
+        #region Operators
+        //public string ToString(string format)
+        //{
         //
-        // Resumen:
-        //     Returns a nicely formatted string of the Quaternion.
-        //
-        // Parámetros:
-        //   format:
+        //}        
+
         public override string ToString()
         {
-
+            return "(" + _x.ToString() + ", " + _y.ToString() + ", " + _z.ToString() + ", " + _w.ToString() + ")";
         }
 
         public static Vec3 operator *(MyQuatern rotation, Vec3 point)
         {
+            Vec3 convertQuat = new Vec3(rotation._x, rotation._y, rotation._z);
+            float scalar = rotation._w;
 
+            return new Vec3(point + 2 * scalar * (convertQuat * point) + 2 * (convertQuat * (convertQuat * point)));
         }
+
         public static MyQuatern operator *(MyQuatern lhs, MyQuatern rhs)
         {
+            MyQuatern newQuatern = new MyQuatern(lhs._x * rhs._x, lhs._y * rhs._y, lhs._z * rhs._z, lhs._w * rhs._w);
 
+            return newQuatern;
         }
+
         public static bool operator ==(MyQuatern lhs, MyQuatern rhs)
         {
-
+            if ((lhs._x == rhs._x) && (lhs._y == rhs._y) && (lhs._z == rhs._z) && (lhs._w == rhs._w))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static bool operator !=(MyQuatern lhs, MyQuatern rhs)
         {
-
+            if ((lhs._x != rhs._x) || (lhs._y != rhs._y) || (lhs._z != rhs._z) || (lhs._w != rhs._w))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
 
