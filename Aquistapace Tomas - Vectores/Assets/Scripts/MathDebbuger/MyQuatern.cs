@@ -45,36 +45,72 @@ namespace CustomQuatern
         {
             get
             {
-                throw new NotImplementedException();
+                switch (index)
+                {
+                    case 0:
+                        return x;
+                    case 1:
+                        return y;
+                    case 2:
+                        return z;
+                    case 3:
+                        return w;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Index");
+                }
             }
             set
             {
-                throw new NotImplementedException();
+                switch (index)
+                {
+                    case 0:
+                        x = value;
+                        break;
+                    case 1:
+                        y = value;
+                        break;
+                    case 2:
+                        z = value;
+                        break;
+                    case 3:
+                        w = value;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Index");
+                }
             }
         }
-        public static MyQuatern identity 
-        { 
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public static MyQuatern identity { get { return new MyQuatern(0,0,0,1); } }
         public Vec3 eulerAngles 
         {
             get
             {
-                throw new NotImplementedException();
+                Vec3 newEuler;
+
+                newEuler.x = Mathf.Rad2Deg * Mathf.Asin(x * 2);
+                newEuler.y = Mathf.Rad2Deg * Mathf.Asin(y * 2);
+                newEuler.z = Mathf.Rad2Deg * Mathf.Asin(z * 2);
+
+                return newEuler;
             }
             set
             {
-                throw new NotImplementedException();
+                MyQuatern quat = Euler(value);
+                this.x = quat.x;
+                this.y = quat.y;
+                this.z = quat.z;
+                this.w = quat.w;
             }
         }
-        public Quaternion normalized 
+        public MyQuatern normalized 
         {
             get
             {
-                throw new NotImplementedException();
+                // Magnitud
+                float mag = Mathf.Sqrt((x * x) + (y * y) + (z * z) + (w * w));
+
+                // Normalize
+                return new MyQuatern(this.x / mag, this.y / mag, this.z / mag, this.w / mag);
             }
         }
         #endregion
@@ -98,7 +134,7 @@ namespace CustomQuatern
         //   toDirection:
         public void SetFromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
-
+            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -112,7 +148,7 @@ namespace CustomQuatern
         //     The vector that defines in which direction up is.
         public void SetLookRotation(Vec3 view, [DefaultValue("Vector3.up")] Vec3 up)
         {
-
+            throw new NotImplementedException();
         }
         public void ToAngleAxis(out float angle, out Vec3 axis)
         {
@@ -135,18 +171,11 @@ namespace CustomQuatern
         //   b:
         public static float Angle(MyQuatern a, MyQuatern b)
         {
-            //float produc = (a._x * b._x) + (a._y * b._y) + (a._z * b._z) + (a._w * b._w);
-            //
-            //float magnitudA = Mathf.Sqrt((a._x * a._x) + (a._y * a._y) + (a._z * a._z) + (a._w * a._w));
-            //float magnitudA = Mathf.Sqrt((a._x * a._x) + (a._y * a._y) + (a._z * a._z) + (a._w * a._w));
-            //
-            //float mag = Magnitude(a) * Magnitude(b);
-            //
-            //float ang = produc / mag;
-            //
-            //return ang = Mathf.Acos(ang) * Mathf.Rad2Deg;
+            MyQuatern inv = Inverse(a);
+            MyQuatern result = b * inv;
 
-            throw new NotImplementedException();
+            float angle = Mathf.Acos(result.w) * 2.0f * Mathf.Rad2Deg;
+            return angle;
         }
         //
         // Resumen:
@@ -174,8 +203,8 @@ namespace CustomQuatern
         //   b:
         public static float Dot(MyQuatern a, MyQuatern b)
         {
-
-            return 0f;
+            float produc = (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w);
+            return produc;
         }
         //
         // Resumen:
@@ -198,7 +227,7 @@ namespace CustomQuatern
             float cosAngleZ = Mathf.Cos(Mathf.Deg2Rad * euler.z * 0.5f);
             MyQuatern qz = new MyQuatern(0, 0, sinAngleZ, cosAngleZ);
 
-            return (qx * qy * qz);
+            return new MyQuatern(qx * qy * qz);
         }
         //
         // Resumen:
@@ -213,7 +242,19 @@ namespace CustomQuatern
         //   z:
         public static MyQuatern Euler(float x, float y, float z)
         {
-            throw new NotImplementedException();
+            float sinAngleX = Mathf.Sin(Mathf.Deg2Rad * x * 0.5f);
+            float cosAngleX = Mathf.Cos(Mathf.Deg2Rad * x * 0.5f);
+            MyQuatern qx = new MyQuatern(sinAngleX, 0, 0, cosAngleX);
+
+            float sinAngleY = Mathf.Sin(Mathf.Deg2Rad * y * 0.5f);
+            float cosAngleY = Mathf.Cos(Mathf.Deg2Rad * y * 0.5f);
+            MyQuatern qy = new MyQuatern(0, sinAngleY, 0, cosAngleY);
+
+            float sinAngleZ = Mathf.Sin(Mathf.Deg2Rad * z * 0.5f);
+            float cosAngleZ = Mathf.Cos(Mathf.Deg2Rad * z * 0.5f);
+            MyQuatern qz = new MyQuatern(0, 0, sinAngleZ, cosAngleZ);
+
+            return new MyQuatern(qx * qy * qz);
         }
         public static MyQuatern EulerAngles(float x, float y, float z)
         {
@@ -251,7 +292,7 @@ namespace CustomQuatern
         //   rotation:
         public static MyQuatern Inverse(MyQuatern rotation)
         {
-            throw new NotImplementedException();
+            return new MyQuatern(-rotation.x, -rotation.y, -rotation.z, rotation.w);
         }
         //
         // Resumen:
@@ -306,7 +347,7 @@ namespace CustomQuatern
         //   q:
         public static MyQuatern Normalize(MyQuatern q)
         {
-            throw new NotImplementedException();
+            return q.normalized;
         }
         //
         // Resumen:

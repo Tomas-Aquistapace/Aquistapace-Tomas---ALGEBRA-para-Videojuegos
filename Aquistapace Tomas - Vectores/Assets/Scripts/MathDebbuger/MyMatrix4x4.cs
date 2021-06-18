@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 namespace CustomMath
 {
+    /*
     public struct MyMatrix4x4 : IEquatable<MyMatrix4x4>
     {
         public float m00;
@@ -23,8 +24,28 @@ namespace CustomMath
         public float m10;
         public float m31;
 
-        public float this[int index] { get; set; }
-        public float this[int row, int column] { get; set; }
+        public float this[int index] 
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public float this[int row, int column] 
+        {
+            get
+            {
+                throw new NotImplementedException(); 
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         //
         // Resumen:
@@ -65,7 +86,7 @@ namespace CustomMath
         //   q:
         public static Matrix4x4 Rotate(Quaternion q)
         {
-
+            throw new NotImplementedException();
         }
 
         //
@@ -76,7 +97,7 @@ namespace CustomMath
         //   vector:
         public static Matrix4x4 Scale(Vector3 vector)
         {
-
+            throw new NotImplementedException();
         }
 
         //
@@ -87,12 +108,12 @@ namespace CustomMath
         //   vector:
         public static Matrix4x4 Translate(Vector3 vector)
         {
-
+            throw new NotImplementedException();
         }
 
         public static Matrix4x4 Transpose(Matrix4x4 m)
         {
-
+            throw new NotImplementedException();
         }
 
         //
@@ -107,17 +128,13 @@ namespace CustomMath
         //   s:
         public static Matrix4x4 TRS(Vector3 pos, Quaternion q, Vector3 s)
         {
-
+            throw new NotImplementedException();
         }
-
-
 
         public bool Equals(Matrix4x4 other)
         {
-
+            throw new NotImplementedException();
         }
-
-
 
         //
         // Resumen:
@@ -127,7 +144,7 @@ namespace CustomMath
         //   index:
         public Vector4 GetRow(int index)
         {
-
+            throw new NotImplementedException();
         }
 
 
@@ -170,23 +187,23 @@ namespace CustomMath
 
         }
 
-
-
+        
         public static Vector4 operator *(Matrix4x4 lhs, Vector4 vector)
         {
-
+            throw new NotImplementedException();
         }
         public static Matrix4x4 operator *(Matrix4x4 lhs, Matrix4x4 rhs)
         {
-
+            throw new NotImplementedException();
         }
         public static bool operator ==(Matrix4x4 lhs, Matrix4x4 rhs)
         {
-
+            throw new NotImplementedException();
         }
         public static bool operator !=(Matrix4x4 lhs, Matrix4x4 rhs)
         {
-            
+            throw new NotImplementedException();
         }
     }
+    */
 }
