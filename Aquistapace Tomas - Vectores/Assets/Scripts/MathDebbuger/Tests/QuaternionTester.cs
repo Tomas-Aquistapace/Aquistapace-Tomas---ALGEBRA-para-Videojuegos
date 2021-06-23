@@ -21,20 +21,15 @@ public class QuaternionTester : MonoBehaviour
         MyQuatern myQuat1 = MyQuatern.Euler(myVec1);
         MyQuatern myQuat2 = MyQuatern.Euler(myVec2);
 
-        Quaternion uniQuat1 = Quaternion.Euler(unVec1);//new Quaternion(Quaternion.Euler(myVec1));
-        Quaternion uniQuat2 = Quaternion.Euler(unVec2);//new Quaternion(Quaternion.Euler(myVec2));
-
-
-        float algo = MyQuatern.Angle(myQuat1, myQuat2);
-        float algo2 = Quaternion.Angle(uniQuat1, uniQuat2);
+        Quaternion uniQuat1 = Quaternion.FromToRotation(unVec1, unVec2);
 
         //Vec3 algo = MyQuatern.Angle();
         //Vector3 algo2 = unityQuater.eulerAngles;
 
-        Debug.Log("Mio: " + myQuat1);
-        Debug.Log("Unity: " + uniQuat1);
+        Debug.Log("Iña: " + MyQuatern.FromToRotation(myVec1, myVec2));
+        Debug.Log("Unity: " + uniQuat1.x + ", " + uniQuat1.y + ", " + uniQuat1.z + ", " + uniQuat1.w);
         Debug.Log("-------------------");
-        Debug.Log("Mio:" + algo);
-        Debug.Log("Unity:" + algo2);
+        //Debug.Log("Mio:" + algo);
+        //Debug.Log("Unity:" + algo2);
     }
 }

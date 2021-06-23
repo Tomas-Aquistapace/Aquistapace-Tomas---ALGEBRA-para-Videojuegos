@@ -41,7 +41,7 @@ namespace CustomQuatern
         #endregion
 
         #region Properties
-        public float this[int index] 
+        public float this[int index]
         {
             get
             {
@@ -80,8 +80,14 @@ namespace CustomQuatern
                 }
             }
         }
-        public static MyQuatern identity { get { return new MyQuatern(0,0,0,1); } }
-        public Vec3 eulerAngles 
+        public static MyQuatern identity 
+        {
+            get
+            {
+                return new MyQuatern(0, 0, 0, 1);
+            }
+        }
+        public Vec3 eulerAngles
         {
             get
             {
@@ -102,7 +108,7 @@ namespace CustomQuatern
                 this.w = quat.w;
             }
         }
-        public MyQuatern normalized 
+        public MyQuatern normalized
         {
             get
             {
@@ -127,11 +133,6 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Creates a rotation which rotates from fromDirection to toDirection.
-        //
-        // Parámetros:
-        //   fromDirection:
-        //
-        //   toDirection:
         public void SetFromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
             throw new NotImplementedException();
@@ -139,13 +140,6 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   view:
-        //     The direction to look in.
-        //
-        //   up:
-        //     The vector that defines in which direction up is.
         public void SetLookRotation(Vec3 view, [DefaultValue("Vector3.up")] Vec3 up)
         {
             throw new NotImplementedException();
@@ -164,11 +158,6 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Returns the angle in degrees between two rotations a and b.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
         public static float Angle(MyQuatern a, MyQuatern b)
         {
             MyQuatern inv = Inverse(a);
@@ -180,27 +169,17 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Creates a rotation which rotates angle degrees around axis.
-        //
-        // Parámetros:
-        //   angle:
-        //
-        //   axis:
-        public static MyQuatern AngleAxis(float angle, Vector3 axis)
+        public static MyQuatern AngleAxis(float angle, Vec3 axis)
         {
             throw new NotImplementedException();
         }
-        public static MyQuatern AxisAngle(Vector3 axis, float angle)
+        public static MyQuatern AxisAngle(Vec3 axis, float angle)
         {
             throw new NotImplementedException();
         }
         //
         // Resumen:
         //     The dot product between two rotations.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
         public static float Dot(MyQuatern a, MyQuatern b)
         {
             float produc = (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w);
@@ -210,9 +189,6 @@ namespace CustomQuatern
         // Resumen:
         //     Returns a rotation that rotates z degrees around the z axis, x degrees around
         //     the x axis, and y degrees around the y axis.
-        //
-        // Parámetros:
-        //   euler:
         public static MyQuatern Euler(Vec3 euler)
         {
             float sinAngleX = Mathf.Sin(Mathf.Deg2Rad * euler.x * 0.5f);
@@ -233,28 +209,9 @@ namespace CustomQuatern
         // Resumen:
         //     Returns a rotation that rotates z degrees around the z axis, x degrees around
         //     the x axis, and y degrees around the y axis; applied in that order.
-        //
-        // Parámetros:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
         public static MyQuatern Euler(float x, float y, float z)
         {
-            float sinAngleX = Mathf.Sin(Mathf.Deg2Rad * x * 0.5f);
-            float cosAngleX = Mathf.Cos(Mathf.Deg2Rad * x * 0.5f);
-            MyQuatern qx = new MyQuatern(sinAngleX, 0, 0, cosAngleX);
-
-            float sinAngleY = Mathf.Sin(Mathf.Deg2Rad * y * 0.5f);
-            float cosAngleY = Mathf.Cos(Mathf.Deg2Rad * y * 0.5f);
-            MyQuatern qy = new MyQuatern(0, sinAngleY, 0, cosAngleY);
-
-            float sinAngleZ = Mathf.Sin(Mathf.Deg2Rad * z * 0.5f);
-            float cosAngleZ = Mathf.Cos(Mathf.Deg2Rad * z * 0.5f);
-            MyQuatern qz = new MyQuatern(0, 0, sinAngleZ, cosAngleZ);
-
-            return new MyQuatern(qx * qy * qz);
+            return Euler(new Vec3(x, y, z));
         }
         public static MyQuatern EulerAngles(float x, float y, float z)
         {
@@ -275,21 +232,20 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Creates a rotation which rotates from fromDirection to toDirection.
-        //
-        // Parámetros:
-        //   fromDirection:
-        //
-        //   toDirection:
         public static MyQuatern FromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
-            throw new NotImplementedException();
+            Vec3 cross = Vec3.Cross(fromDirection, toDirection);
+            MyQuatern q;
+            q.x = cross.x;
+            q.y = cross.y;
+            q.z = cross.z;
+            q.w = fromDirection.magnitude * toDirection.magnitude + Vec3.Dot(fromDirection, toDirection);
+            q.Normalize();
+            return q;
         }
         //
         // Resumen:
         //     Returns the Inverse of rotation.
-        //
-        // Parámetros:
-        //   rotation:
         public static MyQuatern Inverse(MyQuatern rotation)
         {
             return new MyQuatern(-rotation.x, -rotation.y, -rotation.z, rotation.w);
@@ -298,42 +254,29 @@ namespace CustomQuatern
         // Resumen:
         //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
         //     t is clamped to the range [0, 1].
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
         public static MyQuatern Lerp(MyQuatern a, MyQuatern b, float t)
         {
-            throw new NotImplementedException();
+            float time = Mathf.Clamp(t, 0, 1);
+            return LerpUnclamped(a,b,time);
         }
         //
         // Resumen:
         //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
         //     t is not clamped.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
         public static MyQuatern LerpUnclamped(MyQuatern a, MyQuatern b, float t)
         {
-            throw new NotImplementedException();
+            // Y = M * X + B
+            // PuntoActual = (Destino - Origen) * Tiempo + OrdenadaAlOrigen
+            MyQuatern actQuat;
+            actQuat.x = (b.x - a.x) * t + a.x;
+            actQuat.y = (b.y - a.y) * t + a.y;
+            actQuat.z = (b.z - a.z) * t + a.z;
+            actQuat.w = (b.w - a.w) * t + a.w;
+            return actQuat;
         }
         //
         // Resumen:
         //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   forward:
-        //     The direction to look in.
-        //
-        //   upwards:
-        //     The vector that defines in which direction up is.
         public static MyQuatern LookRotation(Vec3 forward, [DefaultValue("Vector3.up")] Vec3 upwards)
         {
             throw new NotImplementedException();
@@ -342,9 +285,6 @@ namespace CustomQuatern
         // Resumen:
         //     Converts this quaternion to one with the same orientation but with a magnitude
         //     of 1.
-        //
-        // Parámetros:
-        //   q:
         public static MyQuatern Normalize(MyQuatern q)
         {
             return q.normalized;
@@ -352,13 +292,6 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Rotates a rotation from towards to.
-        //
-        // Parámetros:
-        //   from:
-        //
-        //   to:
-        //
-        //   maxDegreesDelta:
         public static MyQuatern RotateTowards(MyQuatern from, MyQuatern to, float maxDegreesDelta)
         {
             throw new NotImplementedException();
@@ -367,19 +300,6 @@ namespace CustomQuatern
         // Resumen:
         //     Spherically interpolates between quaternions a and b by ratio t. The parameter
         //     t is clamped to the range [0, 1].
-        //
-        // Parámetros:
-        //   a:
-        //     Start value, returned when t = 0.
-        //
-        //   b:
-        //     End value, returned when t = 1.
-        //
-        //   t:
-        //     Interpolation ratio.
-        //
-        // Devuelve:
-        //     A quaternion spherically interpolated between quaternions a and b.
         public static MyQuatern Slerp(MyQuatern a, MyQuatern b, float t)
         {
             throw new NotImplementedException();
@@ -387,16 +307,17 @@ namespace CustomQuatern
         //
         // Resumen:
         //     Spherically interpolates between a and b by t. The parameter t is not clamped.
-        //
-        // Parámetros:
-        //   a:
-        //
-        //   b:
-        //
-        //   t:
         public static MyQuatern SlerpUnclamped(MyQuatern a, MyQuatern b, float t)
         {
             throw new NotImplementedException();
+        }
+        public void Normalize()
+        {
+            // Magnitud
+            float mag = Mathf.Sqrt((x * x) + (y * y) + (z * z) + (w * w));
+
+            // Normalize
+            this = new MyQuatern(this.x / mag, this.y / mag, this.z / mag, this.w / mag);
         }
         #endregion
 
@@ -418,10 +339,6 @@ namespace CustomQuatern
         public override int GetHashCode()
         {
             throw new NotImplementedException();
-        }
-        public void Normalize()
-        {
-
         }
         
         public void SetAxisAngle(Vec3 axis, float angle)
@@ -492,11 +409,6 @@ namespace CustomQuatern
             float y = lhs.w * rhs.y - lhs.x * rhs.z + lhs.y * rhs.w + lhs.z * rhs.x;
             float z = lhs.w * rhs.z + lhs.x * rhs.y - lhs.y * rhs.x + lhs.z * rhs.w;
             float w = lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z;
-
-            //  C.x =    A.w * B.x    +    A.x * B.w    +    A.y * B.z    -    A.z * B.y;
-            //  C.y =    A.w * B.y    -    A.x * B.z    +    A.y * B.w    +    A.z * B.x;
-            //  C.z =    A.w * B.z    +    A.x * B.y    -    A.y * B.x    +    A.z * B.w;
-            //  C.w =    A.w * B.w    -    A.x * B.x    -    A.y * B.y    -    A.z * B.z;
 
             return new MyQuatern(x, y, z, w);
         }
