@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using UnityEngine.Bindings;
-using UnityEngine.Internal;
-using UnityEngine.Scripting;
+﻿using UnityEngine.Internal;
 using UnityEngine;
 using System;
 using CustomMath;
@@ -163,7 +160,7 @@ namespace CustomQuatern
             MyQuatern inv = Inverse(a);
             MyQuatern result = b * inv;
 
-            float angle = Mathf.Acos(result.w) * 2.0f * Mathf.Rad2Deg;
+            float angle = Mathf.Acos(result.w) * 2f * Mathf.Rad2Deg;
             return angle;
         }
         //
@@ -302,14 +299,47 @@ namespace CustomQuatern
         //     t is clamped to the range [0, 1].
         public static MyQuatern Slerp(MyQuatern a, MyQuatern b, float t)
         {
-            throw new NotImplementedException();
+            float time = Mathf.Clamp(t, 0, 1);
+            return SlerpUnclamped(a, b, time);
         }
         //
         // Resumen:
         //     Spherically interpolates between a and b by t. The parameter t is not clamped.
         public static MyQuatern SlerpUnclamped(MyQuatern a, MyQuatern b, float t)
         {
-            throw new NotImplementedException();
+            MyQuatern quatInterpolated = identity;
+
+            float cosHalfTheta = Dot(a, b);
+            if (cosHalfTheta < 0)
+            {
+                b.w = -b.w;
+                b.x = -b.x;
+                b.y = -b.y;
+                b.z = -b.z;
+                cosHalfTheta = -cosHalfTheta;
+            }
+            if (Mathf.Abs(cosHalfTheta) >= 1f)
+            {
+                quatInterpolated.Set(a.x, a.y, a.z, a.w);
+                return quatInterpolated;
+            }
+            float halfTheta = Mathf.Acos(cosHalfTheta);
+            float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
+            if (Mathf.Abs(sinHalfTheta) < 0.001f)
+            {
+                quatInterpolated.w = (a.w * 0.5f + b.w * 0.5f);
+                quatInterpolated.x = (a.x * 0.5f + b.x * 0.5f);
+                quatInterpolated.y = (a.y * 0.5f + b.y * 0.5f);
+                quatInterpolated.z = (a.z * 0.5f + b.z * 0.5f);
+                return quatInterpolated;
+            }
+            float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
+            float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+            quatInterpolated.w = (a.w * ratioA + b.w * ratioB);
+            quatInterpolated.x = (a.x * ratioA + b.x * ratioB);
+            quatInterpolated.y = (a.y * ratioA + b.y * ratioB);
+            quatInterpolated.z = (a.z * ratioA + b.z * ratioB);
+            return quatInterpolated;
         }
         public void Normalize()
         {

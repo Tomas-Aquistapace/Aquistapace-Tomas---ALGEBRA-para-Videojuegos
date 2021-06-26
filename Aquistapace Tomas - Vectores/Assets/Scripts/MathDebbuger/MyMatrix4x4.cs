@@ -113,67 +113,92 @@ namespace CustomMath
         //
         // Resumen:
         //     Creates a rotation matrix.
-        //
-        // Parámetros:
-        //   q:
         public static MyMatrix4x4 Rotate(MyQuatern q)
         {
-            throw new NotImplementedException();
+            /*
+            m00 = 1 - 2 * qy2 - 2 * qz2      |   m01 = 2 * qx * qy - 2 * qz * qw   |  m02 = 2 * qx * qz + 2 * qy * qw
+            m10 = 2 * qx * qy + 2 * qz * qw  |   m11 = 1 - 2 * qx2 - 2 * qz2       |  m12 = 2 * qy * qz - 2 * qx * qw
+            m20 = 2 * qx * qz - 2 * qy * qw  |   m21 = 2 * qy * qz + 2 * qx * qw   |  m22 = 1 - 2 * qx2 - 2 * qy2
+            */
+
+            MyMatrix4x4 newM = MyMatrix4x4.identity;
+
+            newM.m00 = 1 - 2 * (q.y * q.y) - 2 * (q.z * q.z);
+            newM.m01 = 2 * q.x * q.y - 2 * q.z * q.w;
+            newM.m02 = 2 * q.x * q.z + 2 * q.y * q.w;
+            newM.m10 = 2 * q.x * q.y + 2 * q.z * q.w;
+            newM.m11 = 1 - 2 * (q.x * q.x) - 2 * (q.z * q.z);
+            newM.m12 = 2 * q.y * q.z - 2 * q.x * q.w;
+            newM.m20 = 2 * q.x * q.z - 2 * q.y * q.w;
+            newM.m21 = 2 * q.y * q.z + 2 * q.x * q.w;
+            newM.m22 = 1 - 2 * (q.x * q.x) - 2 * (q.y * q.y);
+
+            return newM;
         }
 
         //
         // Resumen:
         //     Creates a scaling matrix.
-        //
-        // Parámetros:
-        //   vector:
         public static MyMatrix4x4 Scale(Vec3 vector)
         {
-            throw new NotImplementedException();
+            MyMatrix4x4 newM = MyMatrix4x4.zero;
+
+            newM.m00 = vector.x;
+            newM.m11 = vector.y;
+            newM.m22 = vector.z;
+            newM.m33 = 1;
+
+            return newM;
         }
 
         //
         // Resumen:
         //     Creates a translation matrix.
-        //
-        // Parámetros:
-        //   vector:
         public static MyMatrix4x4 Translate(Vec3 vector)
         {
-            throw new NotImplementedException();
+            MyMatrix4x4 newM = MyMatrix4x4.identity;
+
+            newM.m03 = vector.x;
+            newM.m13 = vector.y;
+            newM.m23 = vector.z;
+            newM.m33 = 1;
+
+            return newM;
         }
 
+        // 
+        // Resumen:
+        //      The transposed matrix is the one that has the Matrix4x4's columns exchanged with its rows. (Read Only)
         public static MyMatrix4x4 Transpose(MyMatrix4x4 m)
         {
-            throw new NotImplementedException();
+            return new MyMatrix4x4(new Vector4(m.m00, m.m01, m.m02, m.m03),
+                                   new Vector4(m.m10, m.m11, m.m12, m.m13),
+                                   new Vector4(m.m20, m.m21, m.m22, m.m23),
+                                   new Vector4(m.m30, m.m31, m.m32, m.m33));
         }
 
         //
         // Resumen:
         //     Creates a translation, rotation and scaling matrix.
-        //
-        // Parámetros:
-        //   pos:
-        //
-        //   q:
-        //
-        //   s:
         public static MyMatrix4x4 TRS(Vec3 pos, MyQuatern q, Vec3 s)
         {
-            throw new NotImplementedException();
+            MyMatrix4x4 translate = MyMatrix4x4.Translate(pos);
+            MyMatrix4x4 rotate = MyMatrix4x4.Rotate(q);
+            MyMatrix4x4 scale = MyMatrix4x4.Scale(s);
+
+            MyMatrix4x4 newM = translate * rotate * scale;
+
+            return newM;
         }
 
         public bool Equals(MyMatrix4x4 other)
         {
-            throw new NotImplementedException();
+            return this == other;
         }
 
         //
         // Resumen:
         //     Returns a row of the matrix.
-        //
-        // Parámetros:
-        //   index:
         public Vector4 GetRow(int index)
         {
             switch (index)
@@ -194,11 +219,6 @@ namespace CustomMath
         //
         // Resumen:
         //     Sets a column of the matrix.
-        //
-        // Parámetros:
-        //   index:
-        //
-        //   column:
         public void SetColumn(int index, Vector4 column)
         {
             switch (index)
@@ -234,11 +254,6 @@ namespace CustomMath
         //
         // Resumen:
         //     Sets a row of the matrix.
-        //
-        // Parámetros:
-        //   index:
-        //
-        //   row:
         public void SetRow(int index, Vector4 row)
         {
             switch (index)
@@ -271,19 +286,13 @@ namespace CustomMath
                     throw new IndexOutOfRangeException("Invalid Index");
             }
         }
+
         //
         // Resumen:
         //     Sets this matrix to a translation, rotation and scaling matrix.
-        //
-        // Parámetros:
-        //   pos:
-        //
-        //   q:
-        //
-        //   s:
         public void SetTRS(Vec3 pos, MyQuatern q, Vec3 s)
         {
-
+            this = MyMatrix4x4.TRS(pos, q, s);
         }
 
         public override string ToString()
