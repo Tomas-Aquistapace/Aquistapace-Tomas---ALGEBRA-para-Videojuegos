@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using MathDebbuger;
 using CustomQuatern;
@@ -11,73 +10,91 @@ public class QuaternionTester : MonoBehaviour
     {
         Uno, Dos, Tres
     }
-
     public Funciones ejercicio;
-    public Color colorVec;
 
     public float valor;
-    public Vector3 resultado = Vector3.zero;
+
+    Vector3 ejer1 = Vector3.zero;
+    List<Vector3> ejer2 = new List<Vector3>();
+    List<Vector3> ejer3 = new List<Vector3>();
 
     void Start()
     {
-        Vector3Debugger.AddVector(resultado, colorVec, "elRojo");
-        Vector3Debugger.EnableEditorView("elResultado");
+        Vector3Debugger.AddVector(ejer1, Color.red, "primero");
+        ejer1 = new Vector3(5, 0, 0);       
 
-        // -----------------------------------
 
-        Vec3 myVec1 = new Vec3(2, 5.1f, 7.54f);
-        Vec3 myVec2 = new Vec3(1.5f, 3, 4.4f);
+        Vector3Debugger.AddVectorsSecuence(ejer2, false, Color.blue, "segundo");
+        ejer2.Add(new Vector3(5, 0, 0));
+        ejer2.Add(new Vector3(5, 5, 0));
+        ejer2.Add(new Vector3(10, 5, 0));
 
-        Vector3 unVec1 = new Vector3(2, 5.1f, 7.54f);
-        Vector3 unVec2 = new Vector3(1.5f, 3, 4.4f);
 
-        //MyQuatern myQuater = new MyQuatern(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-        //Quaternion unityQuater = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
-
-        MyQuatern myQuat1 = MyQuatern.Euler(myVec1);
-        MyQuatern myQuat2 = MyQuatern.Euler(myVec2);
-
-        //Quaternion uniQuat1 = Quaternion.FromToRotation(unVec1, unVec2);
-
-        Quaternion uniQuat1 = Quaternion.Euler(unVec1);
-        Quaternion uniQuat2 = Quaternion.Euler(unVec2);
-
-        //Vec3 algo = MyQuatern.Angle();
-        //Vector3 algo2 = unityQuater.eulerAngles;
-
-        MyMatrix4x4 miMatrix = MyMatrix4x4.Rotate(myQuat1);
-        Matrix4x4 uniMatrix = Matrix4x4.Rotate(uniQuat1);
-
-        Debug.Log("Mio: " + miMatrix);
-        Debug.Log("Unity: " + uniMatrix);
+        Vector3Debugger.AddVectorsSecuence(ejer3, false, Color.yellow, "tercero");
+        ejer3.Add(new Vector3(5, 0, 0));
+        ejer3.Add(new Vector3(5, 5, 0));
+        ejer3.Add(new Vector3(10, 5, 0));
+        ejer3.Add(new Vector3(10, 10, 0));
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        Vec3 A = new Vec3(resultado);
-
         switch (ejercicio)
         {
             case Funciones.Uno:
+                Vector3Debugger.EnableEditorView("primero");
+                Vector3Debugger.DisableEditorView("segundo");
+                Vector3Debugger.DisableEditorView("tercero");
 
-                
+                // ---------------
+
+                MyQuatern miQuat1 = MyQuatern.Euler(0, valor, 0);
+
+                ejer1 = (miQuat1 * new Vec3(ejer1));
+
+                // ---------------
+
+                Vector3Debugger.UpdatePosition("primero", ejer1);
 
                 break;
 
             case Funciones.Dos:
+                Vector3Debugger.EnableEditorView("segundo");
+                Vector3Debugger.DisableEditorView("primero");
+                Vector3Debugger.DisableEditorView("tercero");
 
-                
+                // ---------------
+
+                MyQuatern miQuat2 = MyQuatern.Euler(0, valor, 0);
+
+                ejer2[1] = (miQuat2 * new Vec3(ejer2[1]));
+                ejer2[2] = (miQuat2 * new Vec3(ejer2[2]));
+                ejer2[3] = (miQuat2 * new Vec3(ejer2[3]));
+
+                // ---------------
+
+                Vector3Debugger.UpdatePositionsSecuence("segundo", ejer2);
 
                 break;
 
             case Funciones.Tres:
+                Vector3Debugger.EnableEditorView("tercero");
+                Vector3Debugger.DisableEditorView("primero");
+                Vector3Debugger.DisableEditorView("segundo");
 
-                
+                // ---------------
+
+                MyQuatern miQuat3 = MyQuatern.Euler(valor * 1.5f, valor * 1.5f, 0);
+
+                ejer3[1] = (miQuat3 * new Vec3(ejer3[1]));
+                ejer3[3] = (MyQuatern.Inverse(miQuat3) * new Vec3(ejer3[3]));
+
+                // ---------------
+
+                Vector3Debugger.UpdatePositionsSecuence("tercero", ejer3);
 
                 break;
         }
-        resultado = A;
-
-        Vector3Debugger.UpdatePosition("elRojo", resultado);
+        
     }
 }

@@ -157,6 +157,8 @@ namespace CustomQuatern
         //     Returns the angle in degrees between two rotations a and b.
         public static float Angle(MyQuatern a, MyQuatern b)
         {
+            // Acos(modulo(Dot(a,b)) * 2 * (pi / 180);
+            
             MyQuatern inv = Inverse(a);
             MyQuatern result = b * inv;
 
@@ -167,10 +169,6 @@ namespace CustomQuatern
         // Resumen:
         //     Creates a rotation which rotates angle degrees around axis.
         public static MyQuatern AngleAxis(float angle, Vec3 axis)
-        {
-            throw new NotImplementedException();
-        }
-        public static MyQuatern AxisAngle(Vec3 axis, float angle)
         {
             throw new NotImplementedException();
         }
@@ -209,22 +207,6 @@ namespace CustomQuatern
         public static MyQuatern Euler(float x, float y, float z)
         {
             return Euler(new Vec3(x, y, z));
-        }
-        public static MyQuatern EulerAngles(float x, float y, float z)
-        {
-            throw new NotImplementedException();
-        }
-        public static MyQuatern EulerAngles(Vec3 euler)
-        {
-            throw new NotImplementedException();
-        }
-        public static MyQuatern EulerRotation(float x, float y, float z)
-        {
-            throw new NotImplementedException();
-        }
-        public static MyQuatern EulerRotation(Vec3 euler)
-        {
-            throw new NotImplementedException();
         }
         //
         // Resumen:
@@ -427,10 +409,23 @@ namespace CustomQuatern
         #region Operators
         public static Vec3 operator *(MyQuatern rotation, Vec3 point)
         {
-            Vec3 convertQuat = new Vec3(rotation.x, rotation.y, rotation.z);
-            float scalar = rotation.w;
-
-            return new Vec3(point + 2 * scalar * (convertQuat * point) + 2 * (convertQuat * (convertQuat * point)));
+            float num = rotation.x * 2;
+            float num2 = rotation.y * 2;
+            float num3 = rotation.z * 2;
+            float num4 = rotation.x * num;
+            float num5 = rotation.y * num2;
+            float num6 = rotation.z * num3;
+            float num7 = rotation.x * num2;
+            float num8 = rotation.x * num3;
+            float num9 = rotation.y * num3;
+            float num10 = rotation.w * num;
+            float num11 = rotation.w * num2;
+            float num12 = rotation.w * num3;
+            Vec3 result;
+            result.x = (1 - (num5 + num6)) * point.x + (num7 - num12) * point.y + (num8 + num11) * point.z;
+            result.y = (num7 + num12) * point.x + (1 - (num4 + num6)) * point.y + (num9 - num10) * point.z;
+            result.z = (num8 - num11) * point.x + (num9 + num10) * point.y + (1 - (num4 + num5)) * point.z;
+            return result;
         }
 
         public static MyQuatern operator *(MyQuatern lhs, MyQuatern rhs)

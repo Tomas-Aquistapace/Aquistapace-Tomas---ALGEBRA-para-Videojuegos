@@ -73,9 +73,10 @@ namespace CustomMath
         {
             get
             {
-                throw new NotImplementedException();
+                return Transpose(this);
             }
         }
+
         //
         // Resumen:
         //     Attempts to get a rotation quaternion from this matrix.
