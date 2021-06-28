@@ -39,6 +39,11 @@ public class QuaternionTester : MonoBehaviour
 
     void FixedUpdate()
     {
+        //transform.rotation = transform.rotation * Quaternion.AngleAxis(valor, Vector3.up);
+        //transform.rotation = transform.rotation * Quaternion.Euler(0,valor,0);
+        //Quaternion quat = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0,100,100), 0.01f);
+        //transform.rotation = quat;
+
         switch (ejercicio)
         {
             case Funciones.Uno:

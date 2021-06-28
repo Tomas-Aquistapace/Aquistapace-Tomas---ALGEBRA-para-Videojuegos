@@ -111,7 +111,6 @@ namespace CustomQuatern
             {
                 // Magnitud
                 float mag = Mathf.Sqrt((x * x) + (y * y) + (z * z) + (w * w));
-
                 // Normalize
                 return new MyQuatern(this.x / mag, this.y / mag, this.z / mag, this.w / mag);
             }
@@ -170,7 +169,19 @@ namespace CustomQuatern
         //     Creates a rotation which rotates angle degrees around axis.
         public static MyQuatern AngleAxis(float angle, Vec3 axis)
         {
-            throw new NotImplementedException();
+            if (axis.sqrMagnitude == 0)
+                return identity;
+
+            angle *= Mathf.Deg2Rad * 0.5f;
+            axis.Normalize();
+            MyQuatern result = identity;
+            axis = axis * (float)Math.Sin(angle);
+            result.x = axis.x;
+            result.y = axis.y;
+            result.z = axis.z;
+            result.w = (float)Math.Cos(angle);
+
+            return Normalize(result);
         }
         //
         // Resumen:
@@ -327,84 +338,10 @@ namespace CustomQuatern
         {
             // Magnitud
             float mag = Mathf.Sqrt((x * x) + (y * y) + (z * z) + (w * w));
-
             // Normalize
             this = new MyQuatern(this.x / mag, this.y / mag, this.z / mag, this.w / mag);
         }
         #endregion
-
-
-        // --------------- \\
-        #region EXTRAS RANDOM
-        public static Vec3 ToEulerAngles(MyQuatern rotation)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Equals(MyQuatern other)
-        {
-            throw new NotImplementedException();
-        }
-        public override bool Equals(object other)
-        {
-            throw new NotImplementedException();
-        }
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public void SetAxisAngle(Vec3 axis, float angle)
-        {
-
-        }
-        public void SetEulerAngles(Vec3 euler)
-        {
-
-        }
-        public void SetEulerAngles(float x, float y, float z)
-        {
-
-        }
-        public void SetEulerRotation(float x, float y, float z)
-        {
-
-        }
-        public void SetEulerRotation(Vector3 euler)
-        {
-
-        }
-        
-        
-        //
-        // Resumen:
-        //     Creates a rotation with the specified forward and upwards directions.
-        //
-        // Parámetros:
-        //   view:
-        //     The direction to look in.
-        //
-        //   up:
-        //     The vector that defines in which direction up is.
-        public void SetLookRotation(Vec3 view)
-        {
-
-        }
-        
-        public void ToAxisAngle(out Vec3 axis, out float angle)
-        {
-            throw new NotImplementedException();
-        }
-        public Vec3 ToEuler()
-        {
-            throw new NotImplementedException();
-        }
-        public Vec3 ToEulerAngles()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-        // --------------- \\
-
 
         #region Operators
         public static Vec3 operator *(MyQuatern rotation, Vec3 point)
@@ -459,6 +396,23 @@ namespace CustomQuatern
             {
                 return false;
             }
+        }
+        #endregion
+
+        #region Interface
+        public override int GetHashCode()
+        {
+            return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2 ^ this.w.GetHashCode() >> 1;
+        }
+        public bool Equals(MyQuatern other)
+        {
+            return this.x.Equals(other.x) && this.y.Equals(other.y) && this.z.Equals(other.z) && this.w.Equals(other.w);
+        }
+        public override bool Equals(object other)
+        {
+            if (!(other is MyQuatern))
+                return false;
+            return Equals((MyQuatern)other);
         }
         #endregion
     }

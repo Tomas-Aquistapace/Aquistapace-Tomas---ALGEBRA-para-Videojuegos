@@ -50,6 +50,7 @@ namespace CustomMath
                 return new MyMatrix4x4(vec0, vec1, vec2, vec3);
             }
         }
+
         //
         // Resumen:
         //     Returns the identity matrix (Read Only).
@@ -65,51 +66,6 @@ namespace CustomMath
                 return new MyMatrix4x4(vec0, vec1, vec2, vec3);
             }
         }
-
-        //
-        // Resumen:
-        //     Returns the transpose of this matrix (Read Only).
-        public MyMatrix4x4 transpose
-        {
-            get
-            {
-                return Transpose(this);
-            }
-        }
-
-        //
-        // Resumen:
-        //     Attempts to get a rotation quaternion from this matrix.
-        public MyQuatern rotation
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        //
-        // Resumen:
-        //     Attempts to get a scale value from the matrix. (Read Only)
-        public Vec3 lossyScale
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        //
-        // Resumen:
-        //     The inverse of this matrix. (Read Only)
-        public MyMatrix4x4 inverse
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
 
         //
         // Resumen:
